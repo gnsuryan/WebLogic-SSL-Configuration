@@ -1,7 +1,3 @@
-## Welcome to GitHub Pages
-
-This page provide documentation on various technical aspects worked on by @gnsuryan
-
 ###  SSL configuration and setup of WebLogic Server
 
 This section provides details on how a WebLogic Server can be configured to run on HTTPS/SSL 
