@@ -1,37 +1,87 @@
 ## Welcome to GitHub Pages
 
-You can use the [editor on GitHub](https://github.com/gnsuryan/documentation/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
+This page provide documentation on various technical aspects worked on by @gnsuryan
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+###  SSL configuration and setup of WebLogic Server
 
-### Markdown
+This section provides details on how a WebLogic Server can be configured to run on HTTPS/SSL 
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+WebLogic Application Servers can be configured to run in both SSL/non-SSL modes.
+If configured to run in SSL mode, Weblogic Servers. By default, use the demo-cert configuration. 
+These demonstration digital certificates, private keys, and trusted CA certificates should be used in a development environment only.
+This document provides information on how to configure a WebLogic Server to use custom/user specific  SSL certificates in Microsoft Azure cloud platform.
 
-```markdown
-Syntax highlighted code block
+Asbsumption:
+This document assumes that the user has already obtained the ssl certificates/private key from a valid Certification Authority (CA).
 
-# Header 1
-## Header 2
-### Header 3
+The Certification Authority usually provides a zip file containing the following:
+   * Your Server SSL Certificate
+   * Your Root/Intermediate Certificates
+   * Your Private Key
 
-- Bulleted
-- List
+Note: The CA can provide a combined or separate root/intermediate certificates.  Also, there can be multiple intermediate certificates.
+The root and intermediate certificates need to be combined to form a single combined certificate which would then be used to setup the SSL configuration on the WebLogic Server.
 
-1. Numbered
-2. List
+### Create and validate Combined Certificate
 
-**Bold** and _Italic_ and `Code` text
+To create the combined certificate, copy the contents of the root certificates (including -----BEGIN CERTIFICATE----- and -----END CERTIFICATE----- ) and paste them one below the other in a text editor and save it as combined.crt
 
-[Link](url) and ![Image](src)
+To validate the combined certificate, use the following command:
+```
+bash>openssl verify -CAfile combined.crt certificate.crt
+certificate.crt: OK
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+### TrustStore  and IdentityStore
 
-### Jekyll Themes
+To configure SSL on WebLogic Server, we would require two kinds of security files.
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/gnsuryan/documentation/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+  * TrustStore
+  * IdentityStore
 
-### Support or Contact
+The TrustStore file contains the certificates from the intermediate/Root CA or other trusted third parties that is used in the SSL communication.
 
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
+The IdentityStore or the KeyStore file contains the private key and the server SSL certificates
+These files are usually stored in either JKS or PKCS12 formats.
+
+### Create Trust Store
+
+To create a truststore file, use the following command:
+```
+keytool -noprompt -import -alias <serveralias> -file <CA_Certificate> -keystore <truststorefile> -storepass <truststorepassword>
+```
+
+Example:
+```
+keytool -noprompt -import -alias trustcert -file ca_bundle.crt -keystore trust.jks -storepass mypassword
+```
+
+If there are multiple root/CA certificates, import then individually onto the same keystore file.
+Example:
+
+```
+keytool -import -file /u01/app/cascerts/rootCA.cert -alias rootCA -keystore myTrustStore.jks
+keytool -import -file /u01/app/cascerts/firstCA.cert -alias firstCA -keystore myTrustStore.jks
+keytool -import -file /u01/app/cascerts/secondCA.cert -alias secondCA -keystore myTrustStore.jks
+keytool -import -file /u01/app/cascerts/thirdCA.cert -alias thirdCA -keystore myTrustStore.jks
+```
+
+### Create Identity Store
+
+Before creating the identity store, ensure that you merge the intermediate certificates all into one file.
+Example:
+```
+cat ca_1.crt ca_2.crt > combined.crt
+```
+
+Now, create the identity.jks file using the following commands:
+
+```
+openssl pkcs12 -export -in certificate.crt -inkey private.key -chain -CAfile combined.crt -name servercert -out mycert.p12
+keytool -noprompt -importkeystore -deststorepass mypassword -destkeystore identity.jks -srckeystore mycert.p12 -srcstoretype PKCS12 -srcalias servercert -destalias servercert -srckeypass mypassword
+```
+
+Once the identity store is created, you can validate the certificate chain using the following command:
+```
+java -Dssl.debug=true utils.ValidateCertChain -jks servercert identity.jks
+```
