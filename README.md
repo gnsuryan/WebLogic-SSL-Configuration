@@ -81,3 +81,18 @@ Once the identity store is created, you can validate the certificate chain using
 ```
 java -Dssl.debug=true utils.ValidateCertChain -jks servercert identity.jks
 ```
+
+### Store jks files in Azure KeyVault
+
+Secure key management is essential to protected data in the cloud.
+
+Azure Key Vault allows for storage of SSL certificates, confidential keys and other small secrets like passwords.
+
+The following provides commands which shows how ssl certifiates can be stored in Azure key vault securely.
+
+```
+az keyvault secret set --vault-name mySecureKeyVault  --encoding base64 --description text/plain --name appGatewaySSLCertificateData --file certificate.pfx
+
+az keyvault secret set --name "appGatewaySSLCertificatePasswd" --vault-name mySecureKeyVault  --value "Azure123456!"
+
+```
