@@ -10,7 +10,7 @@ This document provides information on how to configure a WebLogic Server to use 
 The following diagram shows the complete process of creating/requesting for a new SSL Certificate from a Certificate Authority and configuring them on the WebLogic Server.
 
 
-![image](https://github.io/gnsuryan/SSL-Configuration/images/Cert_Process.png)
+![SSL Certificate Generation and Configuration Process](https://github.com/gnsuryan/SSL-Configuration/raw/master/images/Cert_Process.png)
 
 
 The Certification Authority usually provides a zip file containing the following:
