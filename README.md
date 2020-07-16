@@ -9,7 +9,7 @@ This document provides information on how to configure a WebLogic Server to use 
 
 The following diagram shows the complete process of creating/requesting for a new SSL Certificate from a Certificate Authority and configuring them on the WebLogic Server.
 
-![SSL Certificate Generation and Configuration Process](https://github.com/gnsuryan/SSL-Configuration/raw/master/images/Cert_Process.png)
+![SSL Certificate Generation and Configuration Process](https://github.com/gnsuryan/WebLogic-SSL-Configuration/raw/master/images/Cert_Process.png)
 
 The following steps provide details on how each of the steps shown in the diagram is implemented.
 
@@ -143,4 +143,5 @@ az keyvault secret set --name "appGatewaySSLCertificatePasswd" --vault-name mySe
 
 The following screen recording provides the details of how to configure the SSL Certificate on the WebLogic Server
 
-![image](https://github.com/gnsuryan/SSL-Configuration/raw/master/images/WLS_SSL_Configuration.png)
+![image](https://github.com/gnsuryan/WebLogic-SSL-Configuration/raw/master/images/WLS_SSL_Configuration.gif)         
+
