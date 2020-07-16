@@ -138,3 +138,9 @@ az keyvault secret set --vault-name mySecureKeyVault  --encoding base64 --descri
 az keyvault secret set --name "appGatewaySSLCertificatePasswd" --vault-name mySecureKeyVault  --value "Azure123456!"
 
 ```
+
+### Configuring SSL Certificate on WebLogic Server
+
+The following screen recording provides the details of how to configure the SSL Certificate on the WebLogic Server
+
+![image](https://github.com/gnsuryan/SSL-Configuration/raw/master/images/WLS_SSL_Configuration.png)
