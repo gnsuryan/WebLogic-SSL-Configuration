@@ -9,9 +9,48 @@ This document provides information on how to configure a WebLogic Server to use 
 
 The following diagram shows the complete process of creating/requesting for a new SSL Certificate from a Certificate Authority and configuring them on the WebLogic Server.
 
-
 ![SSL Certificate Generation and Configuration Process](https://github.com/gnsuryan/SSL-Configuration/raw/master/images/Cert_Process.png)
 
+The following steps provide details on how each of the steps shown in the diagram is implemented.
+
+### Create a Keystore using keytool
+
+```
+keytool –keystore clientkeystore –genkey –alias client
+
+Enter keystore password:  javacaps
+What is your first and last name?
+[Unknown]:  some.org.com
+What is the name of your organizational unit?
+[Unknown]:  Development
+What is the name of your organization?
+[Unknown]:  Some Org
+What is the name of your City or Locality?
+[Unknown]:  San Francisco
+What is the name of your State or Province?
+[Unknown]:  California
+What is the two-letter country code for this unit?
+[Unknown]:  US
+Is <CN=some.org.com, OU=Development, O=Some Org, L=San Francisco, ST=California, 
+C=US> correct?
+[no]:  yes
+
+Enter key password for <client>
+(RETURN if same as keystore password):
+
+```
+
+### Generate a CSR using keytool
+
+```
+keytool –keystore clientkeystore –certreq –alias client –keyalg rsa –file client.csr
+```
+
+### Submit the CSR to CA (Certification Authority)
+
+Submission of CSR (Certificate Signing Request) to CA can be done using online submissions or through email.
+Once the CSR is received by the Certification Authority, the request will be verified and then a SSL certificate will be issued.
+Once the verification process is completed, the Certification Authority can either send the SSL certificate over an email or can be downloaded by the client using online account.  
 
 The Certification Authority usually provides a zip file containing the following:
    * Your Server SSL Certificate
