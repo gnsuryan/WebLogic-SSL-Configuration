@@ -7,8 +7,11 @@ If configured to run in SSL mode, Weblogic Servers. By default, use the demo-cer
 These demonstration digital certificates, private keys, and trusted CA certificates should be used in a development environment only.
 This document provides information on how to configure a WebLogic Server to use custom/user specific  SSL certificates in Microsoft Azure cloud platform.
 
-Asbsumption:
-This document assumes that the user has already obtained the ssl certificates/private key from a valid Certification Authority (CA).
+The following diagram shows the complete process of creating/requesting for a new SSL Certificate from a Certificate Authority and configuring them on the WebLogic Server.
+
+
+![image](https://github.io/gnsuryan/SSL-Configuration/images/Cert_Process.png)
+
 
 The Certification Authority usually provides a zip file containing the following:
    * Your Server SSL Certificate
