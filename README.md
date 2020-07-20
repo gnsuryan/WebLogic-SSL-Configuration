@@ -143,4 +143,4 @@ az keyvault secret set --name "appGatewaySSLCertificatePasswd" --vault-name mySe
 
 The following screen recording provides the details of how to configure the SSL Certificate on the WebLogic Server
 
-<img src="https://github.com/gnsuryan/WebLogic-SSL-Configuration/raw/master/images/WLS_SSL_Configuration.gif" title="WebLogic SSL Configuration" width="1600" height="500">
+<a href="https://github.com/gnsuryan/WebLogic-SSL-Configuration/raw/master/images/WLS_SSL_Configuration.gif" target="_blank"><img src="https://github.com/gnsuryan/WebLogic-SSL-Configuration/raw/master/images/WLS_SSL_Configuration.gif" title="WebLogic SSL Configuration" width="840" height="360"/></a>
