@@ -5,7 +5,7 @@ SSL provides secure connections by allowing two applications connecting over a n
 Authentication allows a server and optionally a client to verify the identity of the application on the other end of a network connection. Encryption makes data transmitted over the network intelligible only to the intended recipient.
 
 
-** SSL on WebLogic Server **
+**SSL on WebLogic Server**
 
 SSL in WebLogic Server is an implementation of the SSL and Transport Layer Security (TLS) specifications. WebLogic Server supports SSL on a dedicated listen port which defaults to 7002.
 
@@ -17,9 +17,13 @@ We can also use self Signed Certificates for configuring WebLogic Server on Deve
 
 **KeyStores**
 
-Keystore is a storage facility to store cryptographic keys and certificates. The following are the two most import Keystore types used.
-•	JKS  - Java Key Store
-•	PKCS12 – Public Key Cryptography Standards 
+Keystore is a storage facility to store cryptographic keys and certificates. <br/>
+The following are the two most import Keystore types used.
+
+<ul>
+<li>JKS  - Java Key Store</li>
+<li>PKCS12 – Public Key Cryptography Standards </li>
+</ul>
 
 **Keypass v/s Storepass**
 
