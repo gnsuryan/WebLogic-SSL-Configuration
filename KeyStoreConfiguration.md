@@ -30,7 +30,7 @@ The following are the two most import Keystore types used.
 *	Storepass is used to protect the integrity of the keystore.
 
 
-### Steps to create Identity and Trust Keystores for Self Signed Certificate using Java Keytool**
+### Steps to create Identity and Trust Keystores for Self Signed Certificate using Java Keytool
 
 The below sections outline the details on how to create Keystores for both Self Signed and CA signed Certificates.
 
@@ -214,4 +214,22 @@ Now, create the identity.jks file using the following commands:
 ```
 openssl pkcs12 -export -in certificate.crt -inkey private.key -chain -CAfile combined.crt -name servercert -out mycert.p12
 keytool -noprompt -importkeystore -deststorepass mypassword -destkeystore identity.jks -srckeystore mycert.p12 -srcstoretype PKCS12 -srcalias servercert -destalias servercert -srckeypass mypassword
+```
+
+### Store jks files in Azure KeyVault
+
+Secure key management is essential to protected data in the cloud.
+
+Azure Key Vault allows for storage of SSL certificates, confidential keys and other small secrets like passwords.
+
+The following commands show how ssl certifiates and keystores can be stored in Azure key vault securely.
+
+```
+az keyvault secret set --vault-name mySecureKeyVault  --encoding base64 --description text/plain --name identityKeyStoreData --file identity.jks
+az keyvault secret set --vault-name mySecureKeyVault  --name "identityKeyPassPhrase" --value "identityKeyPassword"
+az keyvault secret set --vault-name mySecureKeyVault  --encoding base64 --description text/plain --name trustKeyStoreData --file trust.jks
+az keyvault secret set --vault-name mySecureKeyVault  --name "trustKeyPassPhrase" --value "trustKeyPassword"
+az keyvault secret set --vault-name mySecureKeyVault  --name "privateKeyAlias" --value "servercert"
+az keyvault secret set --vault-name mySecureKeyVault  --name "privateKeyPassPhrase" --value "myPrivateKey"
+
 ```
