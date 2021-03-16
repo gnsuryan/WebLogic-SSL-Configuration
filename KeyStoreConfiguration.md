@@ -216,7 +216,7 @@ openssl pkcs12 -export -in certificate.crt -inkey private.key -chain -CAfile com
 keytool -noprompt -importkeystore -deststorepass mypassword -destkeystore identity.jks -srckeystore mycert.p12 -srcstoretype PKCS12 -srcalias servercert -destalias servercert -srckeypass mypassword
 ```
 
-### Store jks files in Azure KeyVault
+### Store keystores and passphrases in Azure KeyVault
 
 Secure key management is essential to protected data in the cloud.
 
