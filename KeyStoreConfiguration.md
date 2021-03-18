@@ -1,29 +1,35 @@
-### SSL: Introduction
+### TLS/SSL: Introduction
 
-SSL provides secure connections by allowing two applications connecting over a network to authenticate each other's identity and by encrypting the data exchanged between the applications.
+TLS/SSL provides secure connections by allowing two applications connecting over a network to authenticate each other's identity and by encrypting the data exchanged between the applications.
 
 Authentication allows a server and optionally a client to verify the identity of the application on the other end of a network connection. Encryption makes data transmitted over the network intelligible only to the intended recipient.
 
 
-### SSL on WebLogic Server
+### TLS/SSL on WebLogic Server
 
-SSL in WebLogic Server is an implementation of the SSL and Transport Layer Security (TLS) specifications. WebLogic Server supports SSL on a dedicated listen port which defaults to 7002.
+TLS/SSL in WebLogic Server is an implementation of the Transport Layer Security (TLS) and Secure Sockets Layer (SSL) specifications. WebLogic Server supports TLS/SSL on a dedicated listen port which defaults to 7002.
 
-For detailed documentation on configuring SSL in WebLogic Server, please refer to the documentation available at https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/secmg/ssl.html#GUID-5274E688-51EC-4A63-A35E-FC718B35C897
+For authoritative and detailed documentation on configuring TLS/SSL in WebLogic Server, please refer to the WebLogic documentation section [Configuring SSL](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/secmg/ssl.html#GUID-5274E688-51EC-4A63-A35E-FC718B35C897).
 
-WebLogic Server, by default, provides demo certificates/keystores for working in a development/test environment. However, it is very important that these certificates not be used in a production environment. 
+WebLogic Server, provides demo certificates/keystores for working in a development/test environment. However, it is very important that these certificates not be used in a production environment.  For more details about the demo certificates/keystores, see [Using Keystores and Certificates in a Development Environment](https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/secmg/identity_trust.html#GUID-F94BDF22-5E91-46B6-A8DF-100FE4662067).  For your convenience, the following table includes some useful information about these keystores/certificates.
 
-We can also use self Signed Certificates for configuring WebLogic Server on Development/Test Environments. However, for Production environment, you will have to procure CA signed SSL Certificates from Certificate Authority (CA) such as Verisign, Let’s Encrypt, GoDaddy etc and create keystores from it.
+| Keystore name | Note |
+|----------------------------------|------|
+| DemoTrust.jks | Trust keystore password: `DemoTrustKeyStorePassPhrase` |
+| DemoIdentity.jks | Identity keystore password: `DemoIdentityKeyStorePassPhrase` |
+| DemoIdentity.jks | Keypass for private key in identity keystore: `DemoIdentityPassPhrase` |
+
+We can also use self Signed Certificates for configuring WebLogic Server on Development/Test Environments. However, for a production environment, you will have to procure CA signed TLS/SSL Certificates from Certificate Authority (CA) such as Verisign, Let’s Encrypt, GoDaddy etc and create keystores from it.
 
 ### KeyStores
 
-Keystore is a storage facility to store cryptographic keys and certificates.
-The following are the two most import Keystore types used.
+A keystore is a storage facility to store cryptographic keys and certificates.
+The following are the two most import keystore types used.
 
 * JKS  - Java Key Store
-* PKCS12 – Public Key Cryptography Standards
+* PKCS12 - Public Key Cryptography Standards
 
-### Keypass v/s Storepass
+### Keypass and Storepass
 
 *	Keypass is a password used to protect the private key of the generated key pair. If Keypass is not provided, then the Keypass value is set to the same value as the Storepass value.
 
