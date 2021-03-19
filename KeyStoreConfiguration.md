@@ -1,19 +1,20 @@
-### SSL: Introduction
+###  TLS/SSL: Introduction
 
-SSL provides secure connections by allowing two applications connecting over a network to authenticate each other's identity and by encrypting the data exchanged between the applications.
+ TLS/SSL provides secure connections by allowing two applications connecting over a network to authenticate each other's identity and by encrypting the data exchanged between the applications.
 
 Authentication allows a server and optionally a client to verify the identity of the application on the other end of a network connection. Encryption makes data transmitted over the network intelligible only to the intended recipient.
 
 
-### SSL on WebLogic Server
+###  TLS/SSL on WebLogic Server
 
-SSL in WebLogic Server is an implementation of the SSL and Transport Layer Security (TLS) specifications. WebLogic Server supports SSL on a dedicated listen port which defaults to 7002.
+ TLS/SSL in WebLogic Server is an implementation of the Secure Sockets Layer (SSL) and Transport Layer Security (TLS) specifications. 
+ WebLogic Server supports TLS/SSL on a dedicated listen port which defaults to 7002.
 
-For detailed documentation on configuring SSL in WebLogic Server, please refer to the documentation available at https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/secmg/ssl.html#GUID-5274E688-51EC-4A63-A35E-FC718B35C897
+For detailed documentation on configuring TLS/SSL on WebLogic Server, please refer to the documentation available at https://docs.oracle.com/en/middleware/fusion-middleware/weblogic-server/12.2.1.4/secmg/ssl.html#GUID-5274E688-51EC-4A63-A35E-FC718B35C897
 
-WebLogic Server, by default, provides demo certificates/keystores for working in a development/test environment. However, it is very important that these certificates not be used in a production environment. 
+WebLogic Server, by default, provides demo certificates/keystores for working in a development/test environment. However, it is very important to note that these certificates should not be used in a production environment. 
 
-We can also use self Signed Certificates for configuring WebLogic Server on Development/Test Environments. However, for Production environment, you will have to procure CA signed SSL Certificates from Certificate Authority (CA) such as Verisign, Let’s Encrypt, GoDaddy etc and create keystores from it.
+Self Signed Certificates are usually created and configured on WebLogic Server on Development/Test Environments. However, for Production environment, one will have to procure CA signed TLS/SSL Certificates from a valid Certificate Authority (CA) such as Verisign, Let’s Encrypt, GoDaddy etc and create keystores from it.
 
 ### KeyStores
 
@@ -48,7 +49,7 @@ keytool -genkey -alias servercert -keyalg RSA -keysize 2048 -sigalg SHA256withRS
 
 **2.	Convert a JKS keystore to PKCS12**
 
-If you would like to use the keystore in PKCS12 format, you can convert a JKS keystore in to a PKCS12 keystore using the following command:
+To use the keystore in PKCS12 format, convert a JKS keystore in to a PKCS12 keystore using the following command:
 
 ```
 keytool -importkeystore -srckeystore <keystoreFileInJKSFormat> -destkeystore <keystoreFileInPKCS12Format> -deststoretype pkcs12
@@ -85,11 +86,11 @@ Example:
 keytool -import -alias trustcert -noprompt -file root.cert -keystore trust.jks -storepass trustKeyStorePassword
 ```
 
-You can convert the Trust Keystore from a JKS to PKCS12 format, using the same command which is specified in Step 2.
+To convert the Trust Keystore from a JKS to PKCS12 format, use the same command which is specified in Step 2.
 
 ### Validating KeyStores
 
-Use the following command to validate the keystore file. Using this both the identity and trust keystores can be validated.
+Use the following command to validate the keystore file (both identity and trust keystores can be validated).
 
 ```
 keytool  -list -v -keystore <keystorefile>
@@ -104,13 +105,13 @@ keytool -list -v -keystore trust.jks -storepass trustKeyStorePassword
 
 ### Steps to create Identity and Trust Keystores for CA Signed Certificate using Java Keytool
 
-The following diagram shows the complete process of creating/requesting for a new SSL Certificate from a Certificate Authority and configuring them on the WebLogic Server.
+The following diagram shows the complete process of creating/requesting for a new TLS/SSL Certificate from a Certificate Authority and configuring them on the WebLogic Server.
 
 ![SSL Certificate Generation and Configuration Process](https://github.com/gnsuryan/WebLogic-SSL-Configuration/raw/master/images/Cert_Process.png)
 
 The following steps provide details on how each of the steps shown in the diagram is implemented.
 
-### Create a Keystore using keytool
+**1. Create a Keystore using keytool**
 
 ```
 keytool –keystore clientkeystore –genkey –alias client
@@ -137,17 +138,17 @@ Enter key password for <client>
 
 ```
 
-### Generate a CSR using keytool
+**2. Generate a CSR using keytool**
 
 ```
 keytool –keystore clientkeystore –certreq –alias client –keyalg rsa –file client.csr
 ```
 
-### Submit the CSR to CA (Certification Authority)
+**3. Submit the CSR to CA (Certification Authority)**
 
 Submission of CSR (Certificate Signing Request) to CA can be done using online submissions or through email.
-Once the CSR is received by the Certification Authority, the request will be verified and then a SSL certificate will be issued.
-Once the verification process is completed, the Certification Authority can either send the SSL certificate over an email or can be downloaded by the client using online account.  
+Once the CSR is received by the Certification Authority, the request will be verified and then a TLS/SSL certificate will be issued.
+Once the verification process is completed, the Certification Authority can either send the TLS/SSL certificate over an email or can be downloaded by the client using online account.  
 
 The Certification Authority usually provides a zip file containing the following:
    * Your Server SSL Certificate
@@ -155,9 +156,9 @@ The Certification Authority usually provides a zip file containing the following
    * Your Private Key
 
 Note: The CA can provide a combined or separate root/intermediate certificates.  Also, there can be multiple intermediate certificates.
-The root and intermediate certificates need to be combined to form a single combined certificate which would then be used to setup the SSL configuration on the WebLogic Server.
+The root and intermediate certificates need to be combined to form a single combined certificate which would then be used to setup the TLS/SSL configuration on the WebLogic Server.
 
-### Create and validate Combined Certificate
+**4. Create and validate Combined Certificate**
 
 To create the combined certificate, copy the contents of the root certificates (including -----BEGIN CERTIFICATE----- and -----END CERTIFICATE----- ) and paste them one below the other in a text editor and save it as combined.crt
 
@@ -167,19 +168,19 @@ bash>openssl verify -CAfile combined.crt certificate.crt
 certificate.crt: OK
 ```
 
-### TrustStore  and IdentityStore
+**5. TrustStore  and IdentityStore**
 
 To configure SSL on WebLogic Server, we would require two kinds of security files.
 
   * TrustStore
   * IdentityStore
 
-The TrustStore file contains the certificates from the intermediate/Root CA or other trusted third parties that is used in the SSL communication.
+The TrustStore file contains the certificates from the intermediate/Root CA or other trusted third parties that is used in the TLS/SSL communication.
 
-The IdentityStore or the KeyStore file contains the private key and the server SSL certificates
+The IdentityStore or the KeyStore file contains the private key and the server TLS/SSL certificates
 These files are usually stored in either JKS or PKCS12 formats.
 
-### Create Trust Store
+**5.1 Create Trust Store**
 
 To create a truststore file, use the following command:
 ```
@@ -201,9 +202,9 @@ keytool -import -file /u01/app/cascerts/secondCA.cert -alias secondCA -keystore 
 keytool -import -file /u01/app/cascerts/thirdCA.cert -alias thirdCA -keystore myTrustStore.jks
 ```
 
-### Create Identity Store
+**5.2 Create Identity Store**
 
-Before creating the identity store, ensure that you merge the intermediate certificates all into one file.
+Before creating the identity store, ensure to merge the intermediate certificates all into one file.
 Example:
 ```
 cat ca_1.crt ca_2.crt > combined.crt
@@ -216,13 +217,13 @@ openssl pkcs12 -export -in certificate.crt -inkey private.key -chain -CAfile com
 keytool -noprompt -importkeystore -deststorepass mypassword -destkeystore identity.jks -srckeystore mycert.p12 -srcstoretype PKCS12 -srcalias servercert -destalias servercert -srckeypass mypassword
 ```
 
-### Store keystores and passphrases in Azure KeyVault
+###6 Store keystores and passphrases in Azure KeyVault
 
 Secure key management is essential to protected data in the cloud.
 
-Azure Key Vault allows for storage of SSL certificates, confidential keys and other small secrets like passwords.
+Azure Key Vault allows for storage of TLS/SSL certificates, confidential keys and other small secrets like passwords.
 
-The following commands show how ssl certifiates and keystores can be stored in Azure key vault securely.
+The following commands show how tls/ssl certifiates and keystores can be stored in Azure key vault securely.
 
 ```
 az keyvault secret set --vault-name mySecureKeyVault  --encoding base64 --description text/plain --name identityKeyStoreData --file identity.jks
