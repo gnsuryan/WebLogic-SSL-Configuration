@@ -38,13 +38,13 @@ The below sections outline the details on how to create Keystores for both Self 
 **1.	Create Identity Keystore**
 
 ```
-keytool -genkey -alias <privatekeyAlias> -keyalg <keyAlgorithm> -keysize <keysize> -sigalg <signatureAlgorithm> -validity <validityPeriodInDays> -keystore <keyStoreFileName> -keypass <keyPassPhrase> -storepass <IdentityKeyStorePassPhrase>
+keytool -genkey -alias <privatekeyAlias> -keyalg <keyAlgorithm> -keysize <keysize> -sigalg <signatureAlgorithm> -validity <validityPeriodInDays> -keystore <keyStoreFileName> -keypass <keyPassPhrase> -storepass <IdentityKeyStorePassPhrase> -storetype JKS
 ```
 
 Example: 
 
 ```
-keytool -genkey -alias servercert -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -validity 365 -keystore identity.jks -keypass identityKeyPassword -storepass identityStorePassword
+keytool -genkey -alias servercert -keyalg RSA -keysize 2048 -sigalg SHA256withRSA -validity 365 -keystore identity.jks -keypass identityKeyPassword -storepass identityStorePassword -storetype JKS
 ```
 
 **2.	Convert a JKS keystore to PKCS12**
@@ -77,13 +77,13 @@ keytool -export -alias servercert -noprompt -file server.cert -keystore identity
 **4.	Import the certificate into Trust Keystore**
 
 ```
-keytool -import -alias <trustStoreAlias> -noprompt -file <certificateName> -keystore <TrustKeyStoreFileName> -storepass <trustKeyStorePassPhrase>
+keytool -import -alias <trustStoreAlias> -noprompt -file <certificateName> -keystore <TrustKeyStoreFileName> -storepass <trustKeyStorePassPhrase> -storetype JKS
 ```
 
 Example:
 
 ```
-keytool -import -alias trustcert -noprompt -file root.cert -keystore trust.jks -storepass trustKeyStorePassword
+keytool -import -alias trustcert -noprompt -file server.cert -keystore trust.jks -storepass trustKeyStorePassword -storetype JKS
 ```
 
 To convert the Trust Keystore from a JKS to PKCS12 format, use the same command which is specified in Step 2.
